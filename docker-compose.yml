@@ -1,0 +1,13 @@
+services:
+  diary:
+    build: .
+    container_name: diary
+    ports:
+      - "${DIARY_PORT:-3000}:3000"
+    volumes:
+      - ./server/data:/app/data
+    environment:
+      - DIARY_JWT_SECRET=${DIARY_JWT_SECRET:-}
+      - DIARY_INITIAL_PASSWORD=${DIARY_INITIAL_PASSWORD:-}
+      - DIARY_TZ=${DIARY_TZ:-Asia/Shanghai}
+    restart: unless-stopped

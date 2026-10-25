@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(1)
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Settings {
+  id       Int    @id @default(1)
+  timezone String @default("Asia/Shanghai")
+}
+
+model Entry {
+  id         String     @id @default(cuid())
+  date       String // 日记归属日 yyyy-MM-dd（按 Settings.timezone 计算，可手动改）
+  title      String     @default("")
+  content    String // BlockNote block JSON（序列化字符串）
+  searchText String     @default("") // 纯文本投影（title + 所有 text block），FTS 数据源
+  mood       String? // great / good / ok / bad / terrible
+  weather    String? // sunny / cloudy / rainy / snowy / windy / foggy
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  tags       EntryTag[]
+
+  @@index([date])
+  @@index([mood])
+}
+
+model Tag {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  color     String?
+  createdAt DateTime   @default(now())
+  entries   EntryTag[]
+}
+
+model EntryTag {
+  entryId String
+  tagId   String
+  entry   Entry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([entryId, tagId])
+}
