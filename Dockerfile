@@ -19,12 +19,12 @@ RUN npx prisma generate && node build.js
 FROM node:24-alpine
 RUN apk add --no-cache openssl
 ENV NODE_ENV=production \
-    DIARY_DATA_DIR=/app/data \
-    DIARY_WEB_DIR=/app/web-dist \
-    DATABASE_URL=file:/app/data/diary.db
+    DULORA_DATA_DIR=/app/data \
+    DULORA_WEB_DIR=/app/web-dist \
+    DATABASE_URL=file:/app/data/dulora.db
 WORKDIR /app/server
 COPY --from=server /build/server ./
 COPY --from=web /build/web/dist /app/web-dist
 EXPOSE 3000
 VOLUME /app/data
-CMD ["sh", "-c", "mkdir -p /app/data && touch /app/data/diary.db && npx prisma db push --skip-generate && node dist/app.js"]
+CMD ["sh", "-c", "mkdir -p /app/data && touch /app/data/dulora.db && npx prisma db push --skip-generate && node dist/app.js"]

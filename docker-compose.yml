@@ -1,13 +1,13 @@
 services:
-  diary:
+  dulora:
     build: .
-    container_name: diary
+    container_name: dulora
     ports:
-      - "${DIARY_PORT:-3000}:3000"
+      - "${DULORA_PORT:-3000}:3000"
     volumes:
       - ./server/data:/app/data
     environment:
-      - DIARY_JWT_SECRET=${DIARY_JWT_SECRET:-}
-      - DIARY_INITIAL_PASSWORD=${DIARY_INITIAL_PASSWORD:-}
-      - DIARY_TZ=${DIARY_TZ:-Asia/Shanghai}
+      - DULORA_JWT_SECRET=${DULORA_JWT_SECRET:-}
+      - DULORA_INITIAL_PASSWORD=${DULORA_INITIAL_PASSWORD:-}
+      - DULORA_TZ=${DULORA_TZ:-Asia/Shanghai}
     restart: unless-stopped

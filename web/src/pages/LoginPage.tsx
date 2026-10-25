@@ -30,7 +30,7 @@ export function LoginPage() {
       >
         <div className="mb-6 text-center">
           <div className="mb-2 text-4xl">📔</div>
-          <h1 className="text-xl font-semibold">我的日记</h1>
+          <h1 className="text-xl font-semibold">Dulora</h1>
           <p className="mt-1 text-sm text-neutral-400">输入密码解锁你的回忆</p>
         </div>
         <input

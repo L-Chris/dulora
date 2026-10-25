@@ -24,7 +24,7 @@ export async function ensureUser(): Promise<void> {
   if (!password) password = crypto.randomBytes(9).toString('base64url');
   await prisma.user.create({ data: { id: 1, passwordHash: await hashPassword(password) } });
   if (generated) {
-    console.warn(`[diary] 已生成初始密码（仅此一次显示，请在设置页修改）: ${password}`);
+    console.warn(`[dulora] 已生成初始密码（仅此一次显示，请在设置页修改）: ${password}`);
   }
 }
 

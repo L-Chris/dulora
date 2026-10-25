@@ -10,11 +10,11 @@ async function main(): Promise<void> {
   await ensureFts();
   const app = createApp();
   app.listen(PORT, () => {
-    console.log(`[diary] server listening on http://localhost:${PORT}`);
+    console.log(`[dulora] server listening on http://localhost:${PORT}`);
   });
 }
 
 main().catch((err) => {
-  console.error('[diary] failed to start:', err);
+  console.error('[dulora] failed to start:', err);
   process.exit(1);
 });

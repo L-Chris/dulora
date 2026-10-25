@@ -21,7 +21,7 @@ export function setupKoaMiddlewares(app: Koa): void {
       const status = typeof raw === 'number' && raw >= 400 && raw < 600 ? raw : 500;
       ctx.status = status;
       ctx.body = { message: status >= 500 ? 'internal server error' : (e?.message ?? 'error') };
-      if (status >= 500) console.error('[diary] unhandled error:', err);
+      if (status >= 500) console.error('[dulora] unhandled error:', err);
     }
   });
 

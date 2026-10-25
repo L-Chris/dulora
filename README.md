@@ -1,4 +1,4 @@
-# Diary — 现代日记软件
+# Dulora — 现代日记软件
 
 单用户、密码登录的私人日记应用：块编辑器（Notion 风格）、标签、日历视图、中文全文搜索、心情/天气记录。
 
@@ -17,7 +17,7 @@
 ## 目录结构
 
 ```
-diary/
+dulora/
 ├── Dockerfile / docker-compose.yml
 ├── docs/            # 设计文档
 ├── server/          # Koa 后端（controllers → modules → prisma 分层）
@@ -30,8 +30,8 @@ diary/
 # 后端
 cd server
 npm install
-npx prisma db push        # 初始化 SQLite（server/data/diary.db）
-DIARY_INITIAL_PASSWORD=你的密码 npm run dev   # http://localhost:3000
+npx prisma db push        # 初始化 SQLite（server/data/dulora.db）
+DULORA_INITIAL_PASSWORD=你的密码 npm run dev   # http://localhost:3000
 
 # 前端（另开终端）
 cd web
@@ -39,26 +39,26 @@ npm install
 npm run dev               # http://localhost:5173
 ```
 
-首次启动会用 `DIARY_INITIAL_PASSWORD` 创建单用户；未设置则生成随机密码打印到服务端日志一次。之后可在设置页修改密码。
+首次启动会用 `DULORA_INITIAL_PASSWORD` 创建单用户；未设置则生成随机密码打印到服务端日志一次。之后可在设置页修改密码。
 
-> 注意：若 `prisma db push` 报 `Schema engine error`（SQLite 文件不存在时的偶发问题），先 `mkdir -p data && touch data/diary.db` 再重试。
+> 注意：若 `prisma db push` 报 `Schema engine error`（SQLite 文件不存在时的偶发问题），先 `mkdir -p data && touch data/dulora.db` 再重试。
 
 ## 容器化部署
 
 ```bash
-cp .env.example .env      # 按需填写 DIARY_JWT_SECRET（生产必填）
+cp .env.example .env      # 按需填写 DULORA_JWT_SECRET（生产必填）
 docker compose up --build --detach
-# 访问 http://localhost:3000（宿主端口可用 .env 的 DIARY_PORT 覆盖）
+# 访问 http://localhost:3000（宿主端口可用 .env 的 DULORA_PORT 覆盖）
 ```
 
 环境变量：
 
 | 变量 | 默认 | 说明 |
 | --- | --- | --- |
-| `DIARY_PORT` | 3000 | 宿主端口（容器内固定 3000） |
-| `DIARY_JWT_SECRET` | 随机生成 | **生产必须显式设置**，否则重启后会话失效 |
-| `DIARY_INITIAL_PASSWORD` | 随机生成 | 仅首次初始化用户时生效 |
-| `DIARY_TZ` | Asia/Shanghai | 默认时区（决定「今天」归属日，可在设置页改） |
+| `DULORA_PORT` | 3000 | 宿主端口（容器内固定 3000） |
+| `DULORA_JWT_SECRET` | 随机生成 | **生产必须显式设置**，否则重启后会话失效 |
+| `DULORA_INITIAL_PASSWORD` | 随机生成 | 仅首次初始化用户时生效 |
+| `DULORA_TZ` | Asia/Shanghai | 默认时区（决定「今天」归属日，可在设置页改） |
 
 SQLite 数据持久化在宿主 `server/data/`（挂载到容器 `/app/data`），备份即拷贝该目录。启动时自动执行 `prisma db push` 同步表结构。
 

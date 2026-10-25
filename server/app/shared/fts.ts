@@ -34,7 +34,7 @@ export async function ensureFts(): Promise<void> {
     `SELECT COUNT(*) AS c FROM entries_fts`
   );
   if (Number(entryCount.c) !== Number(ftsCount.c)) {
-    console.log('[diary] entries_fts 与 Entry 行数不一致，全量重建 FTS 索引');
+    console.log('[dulora] entries_fts 与 Entry 行数不一致，全量重建 FTS 索引');
     await prisma.$executeRawUnsafe(`DELETE FROM entries_fts`);
     await prisma.$executeRawUnsafe(
       `INSERT INTO entries_fts(entry_id, text) SELECT id, COALESCE(searchText, '') FROM "Entry"`

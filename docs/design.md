@@ -1,4 +1,4 @@
-# 现代日记软件 设计方案
+# Dulora — 现代日记软件设计方案
 
 > 版本 v0.1 · 2026-10-24
 > 技术栈对齐 [flashnext](https://github.com/L-Chris/flashnext)：Koa + React + Tailwind + Prisma(SQLite) + Docker
@@ -39,7 +39,7 @@
 ## 3. 目录结构
 
 ```
-diary/
+dulora/
 ├── Dockerfile                  # 多阶段构建
 ├── docker-compose.yml
 ├── .dockerignore / .gitignore
@@ -185,8 +185,8 @@ CREATE VIRTUAL TABLE IF NOT EXISTS entries_fts
 
 单用户 + 密码登录：
 
-1. **初始化**：首次启动时若 `User` 不存在，读取环境变量 `DIARY_INITIAL_PASSWORD` 创建（未设置则生成随机密码打印到日志一次）。之后可在设置页修改。
-2. **登录**：`POST /api/auth/login { password }` → argon2 校验 → 签发 JWT（7 天有效）→ `Set-Cookie: diary_token=...; HttpOnly; SameSite=Lax; Path=/`。
+1. **初始化**：首次启动时若 `User` 不存在，读取环境变量 `DULORA_INITIAL_PASSWORD` 创建（未设置则生成随机密码打印到日志一次）。之后可在设置页修改。
+2. **登录**：`POST /api/auth/login { password }` → argon2 校验 → 签发 JWT（7 天有效）→ `Set-Cookie: dulora_token=...; HttpOnly; SameSite=Lax; Path=/`。
 3. **守卫**：`routing.middlewares.ts` 中的 auth 中间件对 `/api/**` 统一校验，仅放行 `/api/auth/login` 与 `/api/health`。
 4. **限流**：登录接口内存级简单限流（同 IP 5 次/分钟），防暴力尝试。
 
@@ -194,10 +194,10 @@ CREATE VIRTUAL TABLE IF NOT EXISTS entries_fts
 
 | 变量 | 默认 | 说明 |
 | --- | --- | --- |
-| `DIARY_PORT` | 3000 | 宿主端口 |
-| `DIARY_JWT_SECRET` | 启动时随机生成 | **生产必须显式设置**，否则重启后会话失效 |
-| `DIARY_INITIAL_PASSWORD` | 随机生成 | 仅首次初始化用 |
-| `DIARY_TZ` | Asia/Shanghai | 默认时区（可被 Settings 覆盖） |
+| `DULORA_PORT` | 3000 | 宿主端口 |
+| `DULORA_JWT_SECRET` | 启动时随机生成 | **生产必须显式设置**，否则重启后会话失效 |
+| `DULORA_INITIAL_PASSWORD` | 随机生成 | 仅首次初始化用 |
+| `DULORA_TZ` | Asia/Shanghai | 默认时区（可被 Settings 覆盖） |
 
 ## 6. API 设计
 
@@ -302,11 +302,11 @@ CREATE VIRTUAL TABLE IF NOT EXISTS entries_fts
 ```yaml
 # docker-compose.yml
 services:
-  diary:
+  dulora:
     build: .
-    ports: ["${DIARY_PORT:-3000}:3000"]
+    ports: ["${DULORA_PORT:-3000}:3000"]
     volumes: ["./server/data:/app/data"]
-    environment: [DIARY_JWT_SECRET, DIARY_INITIAL_PASSWORD, DIARY_TZ]
+    environment: [DULORA_JWT_SECRET, DULORA_INITIAL_PASSWORD, DULORA_TZ]
     restart: unless-stopped
 ```
 

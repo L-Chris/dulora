@@ -8,7 +8,7 @@ const ThemeContext = createContext<{ theme: Theme; toggle: () => void }>({
 });
 
 function initialTheme(): Theme {
-  const stored = localStorage.getItem('diary-theme');
+  const stored = localStorage.getItem('dulora-theme');
   if (stored === 'light' || stored === 'dark') return stored;
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
-    localStorage.setItem('diary-theme', theme);
+    localStorage.setItem('dulora-theme', theme);
   }, [theme]);
 
   const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
