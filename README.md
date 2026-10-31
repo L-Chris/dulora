@@ -1,5 +1,7 @@
 # Dulora — 现代日记软件
 
+> **本项目由 Qwen3.8 Max 开发**
+
 单用户、密码登录的私人日记应用：块编辑器（Notion 风格）、标签、日历视图、中文全文搜索、心情/天气记录。
 
 技术栈对齐 [flashnext](https://github.com/L-Chris/flashnext)：
